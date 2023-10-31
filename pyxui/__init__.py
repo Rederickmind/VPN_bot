@@ -1,1 +1,1 @@
-from pyxui.xui import XUI
+from pyxui.xui import XUI # noqa

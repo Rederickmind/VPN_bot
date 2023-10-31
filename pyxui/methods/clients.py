@@ -4,6 +4,7 @@ from typing import Union
 import pyxui
 from pyxui import errors
 
+
 class Clients:
     def get_client(
         self: "pyxui.XUI",
@@ -16,32 +17,33 @@ class Clients:
         Parameters:
             inbound_id (``int``):
                 Inbound id
-                
+
             email (``str``, optional):
                Email of the client
-                
+
             uuid (``str``, optional):
                UUID of the client
-            
+
         Returns:
-            `~Dict`: On success, a dict is returned or else 404 an error will be raised
+            `~Dict`: On success,
+            a dict is returned or else 404 an error will be raised
         """
-        
+
         get_inbounds = self.get_inbounds()
-        
+
         if not email and not uuid:
             raise ValueError()
-        
+
         for inbound in get_inbounds['obj']:
             if inbound['id'] != inbound_id:
                 continue
-            
+
             settings = json.loads(inbound['settings'])
-            
+
             for client in settings['clients']:
                 if client['email'] != email and client['id'] != uuid:
                     continue
-                
+
                 return client
 
         raise errors.NotFound()
@@ -56,29 +58,30 @@ class Clients:
         Parameters:
             inbound_id (``int``):
                 Inbound id
-                
+
             email (``str``):
                Email of the client
-            
+
         Returns:
-            `~Dict`: On success, a dict is returned or else 404 error will be raised
+            `~Dict`: On success,
+            a dict is returned or else 404 error will be raised
         """
-        
+
         get_inbounds = self.get_inbounds()
-        
+
         if not email:
             raise ValueError()
-        
+
         for inbound in get_inbounds['obj']:
             if inbound['id'] != inbound_id:
                 continue
-            
+
             client_stats = inbound['clientStats']
-            
+
             for client in client_stats:
                 if client['email'] != email:
                     continue
-                
+
                 return client
 
         raise errors.NotFound()
@@ -101,38 +104,39 @@ class Clients:
         Parameters:
             inbound_id (``int``):
                 Inbound id
-                
+
             email (``str``):
                Email of the client
-                
+
             uuid (``str``):
                UUID of the client
-                
+
             enable (``bool``, optional):
                Status of the client
-                
+
             flow (``str``, optional):
                Flow of the client
-                
+
             limit_ip (``str``, optional):
                IP Limit of the client
-                
+
             total_gb (``str``, optional):
                 Download and uploader limition of the client and it's in bytes
-                
+
             expire_time (``str``, optional):
                 Client expiration date and it's in timestamp (epoch)
-                
+
             telegram_id (``str``, optional):
                Telegram id of the client
-                
+
             subscription_id (``str``, optional):
                Subscription id of the client
-            
+
         Returns:
-            `~Dict`: On success, a dict is returned else 404 error will be raised
+            `~Dict`: On success,
+            a dict is returned else 404 error will be raised
         """
-        
+
         settings = {
             "clients": [
                 {
@@ -150,7 +154,7 @@ class Clients:
             "decryption": "none",
             "fallbacks": []
         }
-        
+
         params = {
             "id": inbound_id,
             "settings": json.dumps(settings)
@@ -175,23 +179,24 @@ class Clients:
         Parameters:
             inbound_id (``int``):
                 Inbound id
-                
+
             email (``str``, optional):
                Email of the client
-                
+
             uuid (``str``, optional):
                UUID of the client
-            
+
         Returns:
-            `~Dict`: On success, a dict is returned else 404 error will be raised
+            `~Dict`: On success,
+            a dict is returned else 404 error will be raised
         """
-        
+
         find_client = self.get_client(
             inbound_id=inbound_id,
             email=email,
             uuid=uuid
         )
-        
+
         response = self.request(
             path=f"{inbound_id}/delClient/{find_client['id']}",
             method="POST"
@@ -217,44 +222,45 @@ class Clients:
         Parameters:
             inbound_id (``int``):
                 Inbound id
-                
+
             email (``str``):
                Email of the client
-                
+
             uuid (``str``):
                UUID of the client
-                
+
             enable (``bool``):
                Status of the client
-                
+
             flow (``str``):
                Flow of the client
-                
+
             limit_ip (``str``):
                IP Limit of the client
-                
+
             total_gb (``str``):
                 Download and uploader limition of the client and it's in bytes
-                
+
             expire_time (``str``):
                 Client expiration date and it's in timestamp (epoch)
-                
+
             telegram_id (``str``):
                Telegram id of the client
-                
+
             subscription_id (``str``):
                Subscription id of the client
-            
+
         Returns:
-            `~Dict`: On success, a dict is returned else 404 error will be raised
+            `~Dict`: On success,
+            a dict is returned else 404 error will be raised
         """
-        
+
         find_client = self.get_client(
             inbound_id=inbound_id,
             email=email,
             uuid=uuid
         )
-        
+
         settings = {
             "clients": [
                 {
@@ -272,12 +278,12 @@ class Clients:
             "decryption": "none",
             "fallbacks": []
         }
-            
+
         params = {
             "id": inbound_id,
             "settings": json.dumps(settings)
         }
-        
+
         response = self.request(
             path=f"updateClient/{find_client['id']}",
             method="POST",

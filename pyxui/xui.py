@@ -1,5 +1,6 @@
 from pyxui.methods import Methods
 
+
 class XUI(Methods):
     def __init__(
         self,
@@ -18,6 +19,6 @@ class XUI(Methods):
 
         if self.panel == "alireza":
             self.api_path = "xui/API"
-            
+
         elif self.panel == "sanaei":
             self.api_path = "panel/api"

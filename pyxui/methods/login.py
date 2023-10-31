@@ -3,6 +3,7 @@ from typing import Any
 import pyxui
 from pyxui import errors
 
+
 class Login:
     def login(
         self: "pyxui.XUI",
@@ -14,17 +15,17 @@ class Login:
         Parameters:
             username (``str``):
                 Username of panel
-                
+
             password (``str``):
                 Password of panel
 
         Returns:
             `~Any`: On success, True is returned else an error will be raised
         """
-        
+
         if self.session_string:
             raise errors.AlreadyLogin()
-        
+
         send_request = self.request(
             path="login",
             method="POST",

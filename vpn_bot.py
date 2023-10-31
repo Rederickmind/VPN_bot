@@ -9,11 +9,9 @@ from dotenv import load_dotenv
 from telegram import Bot, ReplyKeyboardMarkup, TelegramError
 from telegram.ext import CommandHandler, Filters, MessageHandler, Updater
 
-from outline_vpn.outline_methods import (
-    get_all_keys, get_key_by_id,
-    remove_data_limit, add_data_limit,
-    create_new_key, delete_key
-)
+from outline_vpn.outline_methods import (add_data_limit, create_new_key,
+                                         delete_key, get_all_keys,
+                                         get_key_by_id, remove_data_limit)
 
 load_dotenv()
 

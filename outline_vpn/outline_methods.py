@@ -1,8 +1,8 @@
-from dotenv import load_dotenv
-from outline_vpn.outline_vpn import OutlineVPN
-
 import os
 
+from dotenv import load_dotenv
+
+from outline_vpn.outline_vpn import OutlineVPN
 
 load_dotenv()
 

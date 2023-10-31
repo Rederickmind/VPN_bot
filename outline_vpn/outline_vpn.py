@@ -112,8 +112,6 @@ class OutlineVPN:
             return result
         raise OutlineServerErrorException("Unable to find this key")
 
-
-
     def create_key(self, key_name=None) -> OutlineKey:
         """Create a new key"""
         response = self.session.post(
@@ -140,7 +138,10 @@ class OutlineVPN:
 
     def delete_key(self, key_id: str) -> bool:
         """Delete a key"""
-        response = self.session.delete(f"{self.api_url}/access-keys/{key_id}", verify=False)
+        response = self.session.delete(
+            f"{self.api_url}/access-keys/{key_id}",
+            verify=False
+        )
         return response.status_code == 204
 
     def rename_key(self, key_id: str, name: str):
@@ -150,7 +151,9 @@ class OutlineVPN:
         }
 
         response = self.session.put(
-            f"{self.api_url}/access-keys/{key_id}/name", files=files, verify=False
+            f"{self.api_url}/access-keys/{key_id}/name",
+            files=files,
+            verify=False
         )
         return response.status_code == 204
 
@@ -159,7 +162,9 @@ class OutlineVPN:
         data = {"limit": {"bytes": limit_bytes}}
 
         response = self.session.put(
-            f"{self.api_url}/access-keys/{key_id}/data-limit", json=data, verify=False
+            f"{self.api_url}/access-keys/{key_id}/data-limit",
+            json=data,
+            verify=False
         )
         return response.status_code == 204
 
@@ -179,7 +184,10 @@ class OutlineVPN:
                 "3":752221577
             }
         }"""
-        response = self.session.get(f"{self.api_url}/metrics/transfer", verify=False)
+        response = self.session.get(
+            f"{self.api_url}/metrics/transfer",
+            verify=False
+        )
         if (
                 response.status_code >= 400
                 or "bytesTransferredByUserId" not in response.json()
@@ -210,7 +218,11 @@ class OutlineVPN:
     def set_server_name(self, name: str) -> bool:
         """Renames the server"""
         data = {"name": name}
-        response = self.session.put(f"{self.api_url}/name", verify=False, json=data)
+        response = self.session.put(
+            f"{self.api_url}/name",
+            verify=False,
+            json=data
+        )
         return response.status_code == 204
 
     def set_hostname(self, hostname: str) -> bool:
@@ -218,13 +230,18 @@ class OutlineVPN:
         Must be a valid hostname or IP address."""
         data = {"hostname": hostname}
         response = self.session.put(
-            f"{self.api_url}/server/hostname-for-access-keys", verify=False, json=data
+            f"{self.api_url}/server/hostname-for-access-keys",
+            verify=False,
+            json=data
         )
         return response.status_code == 204
 
     def get_metrics_status(self) -> bool:
         """Returns whether metrics is being shared"""
-        response = self.session.get(f"{self.api_url}/metrics/enabled", verify=False)
+        response = self.session.get(
+            f"{self.api_url}/metrics/enabled",
+            verify=False
+        )
         return response.json().get("metricsEnabled")
 
     def set_metrics_status(self, status: bool) -> bool:
@@ -240,11 +257,16 @@ class OutlineVPN:
         This can be a port already used for access keys."""
         data = {"port": port}
         response = self.session.put(
-            f"{self.api_url}/server/port-for-new-access-keys", verify=False, json=data
+            f"{self.api_url}/server/port-for-new-access-keys",
+            verify=False,
+            json=data
         )
         if response.status_code == 400:
             raise OutlineServerErrorException(
-                "The requested port wasn't an integer from 1 through 65535, or the request had no port parameter."
+                """
+                The requested port wasn't an integer from 1 through 65535,
+                or the request had no port parameter.
+                """
             )
         elif response.status_code == 409:
             raise OutlineServerErrorException(
