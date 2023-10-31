@@ -31,7 +31,6 @@ OUTLINE_API_URL = os.getenv('OUTLINE_API_URL')
 CERT_SHA256 = os.getenv('CERT_SHA256')
 
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
-# TELEGRAM_CHAT_ID =
 
 
 updater = Updater(token=TELEGRAM_TOKEN)
@@ -62,6 +61,23 @@ def show_outline_keys(update, context):
     )
 
 
+def show_outline_key_by_id(update, context):
+    chat_id = update.message.chat_id
+    context.bot.send_message(
+        chat_id=chat_id,
+        text='What key do you want to select? Input key_id'
+    )
+    updater.dispatcher.add_handler(
+        MessageHandler(Filters.text)
+    )
+    key_id = update.message.text
+    key = get_key_by_id(key_id=key_id)
+    context.bot.send_message(
+        chat_id=update.message.chat_id,
+        text="\n".join(map(str, key))
+    )
+
+
 def main():
     """Основная логика работы бота."""
     if not check_tokens():
@@ -80,6 +96,12 @@ def main():
         CommandHandler(
             'get_keys',
             show_outline_keys
+        )
+    )
+    updater.dispatcher.add_handler(
+        CommandHandler(
+            'get_key_by_id',
+            show_outline_key_by_id
         )
     )
 

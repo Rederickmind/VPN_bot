@@ -98,6 +98,22 @@ class OutlineVPN:
             return result
         raise OutlineServerErrorException("Unable to retrieve keys")
 
+    def get_key(self, key_id):
+        response = self.session.get(
+            f"{self.api_url}/access-keys/{key_id}",
+            verify=False
+        )
+        response_json = response.json()
+        if response.status_code == 200 and f"{key_id}" in response.json():
+            result = {}
+            result["id"] = response_json.get("id")
+            result["name"] = response_json.get("name")
+            result["accessUrl"] = response_json.get("accessUrl")
+            return result
+        raise OutlineServerErrorException("Unable to find this key")
+
+
+
     def create_key(self, key_name=None) -> OutlineKey:
         """Create a new key"""
         response = self.session.post(
@@ -240,12 +256,17 @@ class OutlineVPN:
         """Sets a data transfer limit for all access keys."""
         data = {"limit": {"bytes": limit_bytes}}
         response = self.session.put(
-            f"{self.api_url}/server/access-key-data-limit", verify=False, json=data
+            f"{self.api_url}/server/access-key-data-limit",
+            verify=False,
+            json=data
         )
         return response.status_code == 204
 
     def delete_data_limit_for_all_keys(self) -> bool:
-        """Removes the access key data limit, lifting data transfer restrictions on all access keys."""
+        """
+        Removes the access key data limit,
+        lifting data transfer restrictions on all access keys.
+        """
         response = self.session.delete(
             f"{self.api_url}/server/access-key-data-limit", verify=False
         )

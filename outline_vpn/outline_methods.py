@@ -25,6 +25,12 @@ def get_all_keys(OUTLINE_API_URL, CERT_SHA256,):
     return keys
 
 
+def get_key_by_id(key_id):
+    """Show key before actions with it."""
+    key = client.get_key(key_id=key_id)
+    return key
+
+
 def create_new_key():
     """Create new key."""
     key_dict = {}
@@ -49,8 +55,3 @@ def add_data_limit(key_id, limit):
 def remove_data_limit(key_id):
     """Remove the data limit."""
     client.delete_data_limit(key_id)
-
-
-def get_key_by_id(key_id):
-    """Show key before actions with it."""
-    pass

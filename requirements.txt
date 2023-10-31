@@ -18,3 +18,4 @@ tornado==6.2
 tzdata==2022.7
 tzlocal==4.2
 urllib3==1.26.14
+pyxui
